@@ -82,6 +82,32 @@ func sortArray(A *tabInt, jumlah int){
 		i = i + 1
 	}
 }
+func cekJatuhTempo(A *tabInt, jumlah int) {
+	var hariIni string
+	fmt.Print("Masukkan tanggal hari ini (YYYY-MM-DD): ")
+	fmt.Scan(&hariIni)
+
+	fmt.Println("⏰ Pengeluaran mendekati jatuh tempo:")
+	var i int = 0
+	for i < jumlah {
+		if A[i].status == "belum" || A[i].status == "belum bayar" {
+			if *&A[i].tgl_pembayaran <= hariIni {
+				fmt.Println("- ", A[i].nama_layanan, "(", A[i].tgl_pembayaran, ")")
+			}
+		}
+		i = i + 1
+	}
+}
+func rekomendasiPengeluaran(A *tabInt, jumlah int) {
+	fmt.Println("📉 Rekomendasi pengeluaran yang bisa dikurangi:")
+	var i int = 0
+	for i < jumlah {
+		if A[i].biaya > 100000 {
+			fmt.Println("- ", A[i].nama_layanan, "(", A[i].biaya, ")")
+		}
+		i = i + 1
+	}
+}
 // func search(A tabInt, x int)int{
 // 	var left, rigth, mid int
 // 	var idx int
@@ -103,12 +129,16 @@ func sortArray(A *tabInt, jumlah int){
 
 func menu(A tabInt){
 	var pil, isiArr int
-	for {
+	pil = 0
+	for pil != 6{
 	fmt.Println("===================== MENU ========================")
 	fmt.Println("1. Tampilkan Daftar Layanan")
 	fmt.Println("2. Tambahkan Daftar Layanan")
 	fmt.Println("3. Edit Daftar Layanan")
 	fmt.Println("4. Sort Daftar Layanan")
+	fmt.Println("5. Cek Jatuh Tempo")
+	fmt.Println("6. Rekomendasi Pengeluaran")
+	fmt.Println("7. Keluar")
 	fmt.Scan(&pil)
 	loadData(&A)
 	isiArr = cekIsiArray(&A)
@@ -136,6 +166,12 @@ func menu(A tabInt){
 		fmt.Println("============ SORT PAGE ===============")
 		sortArray(&A, isiArr)
 		tampilkanArray(&A, isiArr)
+	case 5 :
+		fmt.Println("============ CEK JATUH TEMPO PAGE ===============")
+		cekJatuhTempo(&A, isiArr)
+	case 6 :
+		fmt.Println("============ REKOMENDASI PAGE ===============")
+		rekomendasiPengeluaran(&A, isiArr)
 	}
 }
 }
@@ -150,11 +186,6 @@ func loadData(data *tabInt){
 }
 func main() {
 	var data tabInt
-	// var isiArray int
-	// loadData(&data)
-	// fmt.Println(data)
-	// cekIsiArray(&data)
-	// fmt.Println(data)
 	menu(data)
 }
 
