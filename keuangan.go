@@ -31,27 +31,14 @@ func tambahLayanan(A *tabInt, no *int) {
 	cekIsiArray(A)
 	*no++
 }
-func tampilkanLayanan(A *tabInt, no int) {
+func tampilkanArray(A *tabInt, no int) {
+	fmt.Printf("%-4s %-20s %-12s %-10s %-13s %-10s\n", "no", "nama Layanan", "Biaya", "metode", "tgl", "status")
 	for i := 0; i < no; i++ {
-		fmt.Println("ini i = ",i)
-		fmt.Print("Nama Layanan: ")
-		fmt.Print(A[0].nama_layanan, "\n")
-		// fmt.Println()
-		fmt.Print("biaya : ")
-		fmt.Print(A[0].biaya)
-		// fmt.Println()
-		fmt.Print("Metode Pembayaran : ")
-		fmt.Print(A[0].metode_pembayaran, "\n")
-		// fmt.Println()
-		fmt.Print("Tanggal Pembayaran : ")
-		fmt.Print(A[i].tgl_pembayaran, "\n")
-		// fmt.Println()
-		fmt.Print("Status : ")
-		fmt.Print(A[i].status, "\n")
-		// fmt.Println()
+		fmt.Printf("%-4d %-20s Rp%-10d %-10s %-13s %-10s\n", A[i].no, A[i].nama_layanan, A[i].biaya, A[i].metode_pembayaran, A[i].tgl_pembayaran, A[i].status)
 	}
+	fmt.Println()
 }
-func editLayanan(A *tabInt, idx int) {
+func editArray(A *tabInt, idx int) {
 	fmt.Println("======== EDIT ========")
 	idx = idx-1
 	fmt.Print("Nama Layanan: ")
@@ -77,7 +64,24 @@ func cekIsiArray(A *tabInt) int {
 	}
 	return jmlh
 }
-
+func sortArray(A *tabInt, jumlah int){
+	// DESCENDING (Besar ke Kecil)
+	var i int = 0
+	for i < jumlah-1 {
+		var maxIdx int = i
+		var j int = i + 1
+		for j < jumlah {
+			if A[j].biaya > A[maxIdx].biaya {
+				maxIdx = j
+			}
+			j = j + 1
+		}
+		var temp layanan_berlangganan = A[i]
+		A[i] = A[maxIdx]
+		A[maxIdx] = temp
+		i = i + 1
+	}
+}
 // func search(A tabInt, x int)int{
 // 	var left, rigth, mid int
 // 	var idx int
@@ -104,35 +108,43 @@ func menu(A tabInt){
 	fmt.Println("1. Tampilkan Daftar Layanan")
 	fmt.Println("2. Tambahkan Daftar Layanan")
 	fmt.Println("3. Edit Daftar Layanan")
+	fmt.Println("4. Sort Daftar Layanan")
 	fmt.Scan(&pil)
 	loadData(&A)
 	isiArr = cekIsiArray(&A)
 	switch pil{
 	case 1 :
-		tampilkanLayanan(&A, isiArr);
+		fmt.Println("============ DATA PAGE ===============")
+		tampilkanArray(&A, isiArr);
 		fmt.Println("data skrg = ", isiArr)
 	case 2 : 
+	fmt.Println("============ ADD PAGE ===============")
 		cekIsiArray(&A)
 		tambahLayanan(&A, &isiArr)
 		fmt.Println("data skrg = ", isiArr)
 	case 3 :
 		var index int
+		fmt.Println("============ EDIT PAGE ===============")
 		fmt.Print("Baris nomor berapa yang ingin diubah? ")
 		fmt.Scan(&index)
 		fmt.Println("Sebelum edit ")
 		fmt.Println(A)
-		editLayanan(&A, index)
+		editArray(&A, index)
 		fmt.Println("Sesudah edit ")
 		fmt.Println(A)
+	case 4 :
+		fmt.Println("============ SORT PAGE ===============")
+		sortArray(&A, isiArr)
+		tampilkanArray(&A, isiArr)
 	}
 }
 }
 func loadData(data *tabInt){
 	*data = tabInt{
 		{1, "aaa", 1, "ww", "20-302-0", "lunas"},
-		{2, "bbb", 2, "ww", "20-302-0", "lunas"},
+		{2, "bbb", 8, "ww", "20-302-0", "lunas"},
 		{3, "ccc", 3, "ww", "20-302-0", "belum"},
-		{4, "ddd", 4, "ww", "20-302-0", "lunas"},
+		{4, "ddd", 11, "ww", "20-302-0", "lunas"},
 		{5, "eee", 5, "ww", "20-302-0", "lunas"},
 	}
 }
